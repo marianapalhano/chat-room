@@ -1,8 +1,7 @@
 import db from './firestore.js';
-import { collection, doc, setDoc, Timestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+import { collection, doc, setDoc, Timestamp, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
 
 const chats = collection(db, "chats");
-// onSnapshot(chats, snapshot => console.log(snapshot.docs));
 
 class Chatroom {
     constructor(room, username) {
@@ -23,15 +22,18 @@ class Chatroom {
         const response = await setDoc(chatRef, chat);
         return response;
     }
+
     getChats(callback) {
-        // this.chats.where('room', '==', this.room)
-        //     console.log('achou')
-        onSnapshot(this.chats, snapshot => {
-            snapshot.docChanges().forEach(change => {
-                if (change.type === 'added') {
-                    //update the ui
-                    callback(change.doc.data());
-                }
+        const q = query(this.chats, where('room', '==', this.room));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            onSnapshot(doc, snapshot => {
+                snapshot.docChanges().forEach(change => {
+                    if (change.type === 'added') {
+                        //update the ui
+                        callback(change.doc.data());
+                    }
+                })
             })
         })
     }
