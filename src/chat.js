@@ -23,27 +23,26 @@ class Chatroom {
         return response;
     }
 
-    getChats(callback) {
+    async getChats(callback) {
         const q = query(this.chats, where('room', '==', this.room));
         const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            onSnapshot(doc, snapshot => {
-                snapshot.docChanges().forEach(change => {
-                    if (change.type === 'added') {
-                        //update the ui
-                        callback(change.doc.data());
-                    }
-                })
-            })
+        querySnapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+                //update the ui
+                callback(change.doc.data());
+            }     
         })
     }
 }
 
 const chatroom = new Chatroom('gaming', 'shaun');
 chatroom.getChats((data) => {
-    console.log(data);
+    console.log(data)
 })
-// chatroom.addChat("hello everyone")
-//     .then(() => console.log("chat added"))
-//     .catch((err) => console.log(err));
-// console.log(chatroom);
+
+// chatroom.getChats()
+//     .then((data) => {
+//         console.log(data);
+//     }).catch(err => {
+//         console.log(err);
+//     })
