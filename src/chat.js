@@ -1,5 +1,5 @@
 import db from './firestore.js';
-import { collection, doc, setDoc, Timestamp, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
+import { collection, doc, setDoc, Timestamp, onSnapshot, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-firestore.js";
 
 const chats = collection(db, "chats");
 
@@ -24,7 +24,7 @@ class Chatroom {
     }
 
     async getChats(callback) {
-        const q = query(this.chats, where('room', '==', this.room));
+        const q = query(this.chats, where('room', '==', this.room), orderBy('created_at'));
         const querySnapshot = await getDocs(q);
         querySnapshot.docChanges().forEach(change => {
             if (change.type === 'added') {
