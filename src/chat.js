@@ -33,12 +33,23 @@ class Chatroom {
             }     
         })
     }
+
+    updateName(username) {
+        this.username = username;
+    }
+
+    updateRoom(room) {
+        this.room = room;
+        console.log('room updated');
+    }
 }
 
 const chatroom = new Chatroom('gaming', 'shaun');
 chatroom.getChats((data) => {
     console.log(data)
 })
+
+chatroom.updateRoom('general');
 
 // chatroom.getChats()
 //     .then((data) => {
