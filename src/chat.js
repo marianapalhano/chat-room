@@ -8,6 +8,7 @@ class Chatroom {
         this.room = room;
         this.username = username;
         this.chats = chats;
+        this.unsub;
     }
     async addChat(message) {
         // format a chat object
@@ -31,8 +32,30 @@ class Chatroom {
                 //update the ui
                 callback(change.doc.data());
             }     
-        })
+        });            
     }
+
+    // import { collection, query, where, onSnapshot } from "firebase/firestore";
+
+    // const q = query(collection(db, "cities"), where("state", "==", "CA"));
+    // const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    // const cities = [];
+    // querySnapshot.forEach((doc) => {
+    //     cities.push(doc.data().name);
+    // });
+    // console.log("Current cities in CA: ", cities.join(", "));
+    // });
+
+    // async getChats(callback) {
+    //     const q = query(this.chats, where('room', '==', this.room), orderBy('created_at'));
+    //     const querySnapshot = await getDocs(q);
+    //     querySnapshot.docChanges().forEach(change => {
+    //         if (change.type === 'added') {
+    //             //update the ui
+    //             callback(change.doc.data());
+    //         }     
+    //     });            
+    // }
 
     updateName(username) {
         this.username = username;
@@ -41,6 +64,8 @@ class Chatroom {
     updateRoom(room) {
         this.room = room;
         console.log('room updated');
+        
+        //this.unsub();
     }
 }
 
