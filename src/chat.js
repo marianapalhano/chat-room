@@ -8,7 +8,7 @@ class Chatroom {
         this.room = room;
         this.username = username;
         this.chats = chats;
-        this.unsub;
+        this.unsubscribe;
     }
     async addChat(message) {
         // format a chat object
@@ -24,27 +24,17 @@ class Chatroom {
         return response;
     }
 
-    async getChats(callback) {
+    getChats(callback) {
         const q = query(this.chats, where('room', '==', this.room), orderBy('created_at'));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.docChanges().forEach(change => {
-            if (change.type === 'added') {
-                //update the ui
-                callback(change.doc.data());
-            }     
-        });            
+        this.unsubscribe = onSnapshot(q, querySnapshot => {
+            querySnapshot.docChanges().forEach(change => {
+                if (change.type === 'added') {
+                    //update the ui
+                    callback(change.doc.data());
+                }     
+            }); 
+        });        
     }
-
-    // import { collection, query, where, onSnapshot } from "firebase/firestore";
-
-    // const q = query(collection(db, "cities"), where("state", "==", "CA"));
-    // const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    // const cities = [];
-    // querySnapshot.forEach((doc) => {
-    //     cities.push(doc.data().name);
-    // });
-    // console.log("Current cities in CA: ", cities.join(", "));
-    // });
 
     // async getChats(callback) {
     //     const q = query(this.chats, where('room', '==', this.room), orderBy('created_at'));
@@ -64,8 +54,9 @@ class Chatroom {
     updateRoom(room) {
         this.room = room;
         console.log('room updated');
-        
-        //this.unsub();
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }        
     }
 }
 
@@ -74,11 +65,11 @@ chatroom.getChats((data) => {
     console.log(data)
 })
 
-chatroom.updateRoom('general');
-
-// chatroom.getChats()
-//     .then((data) => {
-//         console.log(data);
-//     }).catch(err => {
-//         console.log(err);
-//     })
+setTimeout(() => {
+    chatroom.updateRoom('general');
+    chatroom.updateName('yoshi');
+    chatroom.getChats((data) => {
+        console.log(data);
+    });
+    chatroom.addChat('hello!');
+}, 3000);
