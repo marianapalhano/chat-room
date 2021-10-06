@@ -36,17 +36,6 @@ class Chatroom {
         });        
     }
 
-    // async getChats(callback) {
-    //     const q = query(this.chats, where('room', '==', this.room), orderBy('created_at'));
-    //     const querySnapshot = await getDocs(q);
-    //     querySnapshot.docChanges().forEach(change => {
-    //         if (change.type === 'added') {
-    //             //update the ui
-    //             callback(change.doc.data());
-    //         }     
-    //     });            
-    // }
-
     updateName(username) {
         this.username = username;
     }
@@ -60,16 +49,11 @@ class Chatroom {
     }
 }
 
-const chatroom = new Chatroom('gaming', 'shaun');
-chatroom.getChats((data) => {
-    console.log(data)
-})
-
-setTimeout(() => {
-    chatroom.updateRoom('general');
-    chatroom.updateName('yoshi');
-    chatroom.getChats((data) => {
-        console.log(data);
-    });
-    chatroom.addChat('hello!');
-}, 3000);
+// setTimeout(() => {
+//     chatroom.updateRoom('general');
+//     chatroom.updateName('yoshi');
+//     chatroom.getChats((data) => {
+//         console.log(data);
+//     });
+//     chatroom.addChat('hello!');
+// }, 3000);
