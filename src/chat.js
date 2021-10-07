@@ -3,7 +3,7 @@ import { collection, doc, setDoc, Timestamp, onSnapshot, query, where, getDocs, 
 
 const chats = collection(db, "chats");
 
-class Chatroom {
+export class Chatroom {
     constructor(room, username) {
         this.room = room;
         this.username = username;
