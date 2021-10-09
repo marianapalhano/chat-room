@@ -17,3 +17,9 @@
     font-size: 0.7rem;
     color: #999;
 }
+.update-msg {
+    text-align: center;
+    margin: 20px auto;
+    font-size: 0.7rem;
+    color: green;
+}
