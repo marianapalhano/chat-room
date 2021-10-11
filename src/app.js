@@ -6,6 +6,7 @@ const chatList = document.querySelector('.chat-list');
 const newChatForm = document.querySelector('.new-chat');
 const newNameForm = document.querySelector('.new-name');
 const updateMsg = document.querySelector('.update-msg');
+const rooms = document.querySelector('.chat-rooms');
 
 // add a new chat
 newChatForm.addEventListener('submit', evt => {
@@ -24,6 +25,15 @@ newNameForm.addEventListener('submit', evt => {
     newNameForm.reset();
     updateMsg.innerText = `Your name was updated to ${newName}`;
     setTimeout(() => updateMsg.innerText = '', 3000);
+});
+
+// update chat room
+rooms.addEventListener('click', evt => {
+    if (evt.target.tagName === 'BUTTON') {
+        chatUI.clear();
+        chatroom.updateRoom(evt.target.getAttribute('id'));
+        chatroom.getChats(chat => chatUI.render(chat));
+    }
 });
 
 // check localstorage for username
